@@ -1,0 +1,80 @@
+//============================================================================
+// Name        : pbbb.cpp
+// Author      : Jose Marroquin
+// Version     :
+// Copyright   : 
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+struct Equipo
+{
+	string nombre;
+	int numerodeintegrantes;
+	int puntaje;
+};
+
+int main() {
+	int opcion;
+		cout<<"<<<<<BIENVENIDO A LOS DATOS DE LOS EQUIPOS DEL TORNEO>>>>>\n"<<endl;
+		cout<<"¿De que equipos deseas ver los datos?\n"<<endl;
+		cout<<"1. datos de todos los equipos del torneo"<<endl;
+		cout<<"2. datos de un equipo en particular"<<endl;
+		cin>>opcion;
+
+		if(opcion == 1)
+		{
+	ifstream input;
+	input.open("C:/eclipseCplus/32bits/workspaseCpp/ProgA/equipo.txt",ios::binary);//abriendo el archivo que creamos antes.
+	if(input.is_open()){
+	cout<<"archivo abierto correctamente\n\n"<<endl;
+	Equipo aux[5];//
+	input.seekg(0,ios::beg);
+	for(int i=0; i< 5; i++)
+	{
+	input.read((char*) &aux, sizeof(struct Equipo));
+	cout<<"el equipo en la posicion No. "<<i+1<<" es:"<<endl;
+	cout<<"el nombre del equipo es      : "<< aux[i].nombre<<endl;
+	cout<<"el numero de integrantes es  : "<<  aux[i].numerodeintegrantes<<endl;
+	cout<<"el puntaje es                : "<<  aux[i].puntaje<<"\n"<<endl;
+	}
+	}
+	input.close();
+	return 0;
+	}
+		if(opcion == 2)
+		{
+			Equipo aux;
+			int pos;
+			cout<<"Escriba el numero de posicion que desea ver: "<<endl;
+			cin>>pos;
+			int i, principio, final, posicion;
+			i = pos - 1;
+			principio = i * sizeof(aux);
+			final = pos * sizeof(aux);
+
+			ifstream leer_archivo;
+			leer_archivo.open("C:/eclipseCplus/32bits/workspaseCpp/ProgA/equipo.txt",ios::binary);//abriendo el archivo que creamos antes.
+			if(leer_archivo.is_open()){
+				cout<<"archivo abierto correctamente\n\n"<<endl;
+			leer_archivo.seekg(principio,ios::beg);
+			do {
+				leer_archivo.read((char*) &aux, sizeof(struct Equipo));
+				cout<<"el equipo en la posicion No. "<<i+1<<" es:"<<endl;
+				cout<<"el nombre del equipo es      : "<< aux.nombre<<endl;
+				cout<<"el numero de integrantes es  : "<<  aux.numerodeintegrantes<<endl;
+				cout<<"el puntaje es                : "<<  aux.puntaje<<"\n"<<endl;
+			} while(posicion < final);
+			}
+		leer_archivo.close();
+			return 0;
+		}
+		else{
+			cout<<"la opcion No. "<<opcion<<" no esta disponible"<<endl;
+			return 0;
+		}
+}
