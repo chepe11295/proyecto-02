@@ -1,0 +1,124 @@
+//============================================================================
+// Name        : Programa.cpp
+// Author      : Jose Marroquin
+// Version     :
+// Copyright   : 
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+struct Equipo
+{
+	string nombre;
+	int numerodeintegrantes;
+	int puntaje;
+};
+
+
+int main()
+{
+const int numeros = 5;//constante para ingresar 5 equipos del torneo
+
+	Equipo equip[numeros];
+
+	cout<<"<<<<<INGRESO DE DATOS DE LOS EQUIPOS DEL TORNEO>>>>>\n"<<endl;
+
+	for(int i = 0;i<numeros;i++)//for para ingresar los datos de los 5 equipos del torneo
+	{
+		cout<<"\n ingrese el nombre del equipo No. "<<i+1<<": "<<endl;
+		cin>>equip[i].nombre;
+		cout<<"ingrese el numero de integrantes: "<<endl;
+		cin>>equip[i].numerodeintegrantes;
+		cout<<"ingrese el puntaje del equipo: "<<endl;
+		cin>>equip[i].puntaje;
+		//aqui se toman los datos de todos los equipos
+	}
+//inicia if para ordenar segun puntajes.
+	int opcion;// variable para saber en que forma lo quiere ordenar el usuario a los equipos
+	int i, j, pun, num;
+	string nom;
+	cout<<"Segun el puntaje de los equipos ¿en que forma desea ordenarlos para guardar los datos?\n"<<endl;
+	cout<<"1. ascendente"<<endl;
+	cout<<"2. descendente"<<endl;
+	cin>>opcion;
+	if (opcion == 1)//aqui se declara if para ordenarlos ascendentemente segun puntaje
+	{
+		for (i=0;i<numeros;i++)
+		{
+			for(j=i+1;j<numeros;j++)
+			{
+				if(equip[i].puntaje>equip[j].puntaje)//comparando las posiciones de los arreglos del
+				{									//puntaje para ver cual es menor y ponerlo primero
+					nom = equip[i].nombre;
+					equip[i].nombre = equip[j].nombre;//cambiando posicion del nombre del puntaje menor
+					equip[j].nombre = nom;
+
+					num = equip[i].numerodeintegrantes;
+					equip[i].numerodeintegrantes = equip[j].numerodeintegrantes;//cambiando posicion del numero de integrantes del puntaje menpr
+					equip[j].numerodeintegrantes = num;
+
+					pun = equip[i].puntaje;
+					equip[i].puntaje = equip[j].puntaje;//cambiando posicion de posicion para poner primero al puntaje menor
+					equip[j].puntaje = pun;
+				}
+			}
+		}
+	}
+	if (opcion == 2)//aqui se declara if para ordenarlos ascendentemente segun puntaje
+		{
+			for (i=0;i<numeros;i++)
+			{
+				for(j=i+1;j<numeros;j++)
+				{
+					if(equip[i].puntaje<equip[j].puntaje)//comparando las posiciones de los arreglos del
+					{									//puntaje para ver cual es mayor y ponerlo primero
+
+						nom = equip[i].nombre;
+						equip[i].nombre = equip[j].nombre;//cambiando posicion del nombre del puntaje mayor
+						equip[j].nombre = nom;
+
+						num = equip[i].numerodeintegrantes;
+						equip[i].numerodeintegrantes = equip[j].numerodeintegrantes;//cambiando posicion del numero de integrantes del puntaje mayor
+						equip[j].numerodeintegrantes = num;
+
+						pun = equip[i].puntaje;
+						equip[i].puntaje = equip[j].puntaje;//cambiando posicion de posicion para poner primero al puntaje mayor
+						equip[j].puntaje = pun;
+					}
+				}
+			}
+		}
+
+		ofstream equipos("equipo.txt",ios::binary); //creando el archivo binario primero nombre del archivo y segundo tipo de archivo
+
+		equipos.write((char*) &equip[0], sizeof(struct Equipo)); // escribiendo la variable en el archivo
+		equipos.write((char*) &equip[1], sizeof(struct Equipo)); // escribiendo la variable en el archivo
+		equipos.write((char*) &equip[2], sizeof(struct Equipo)); // escribiendo la variable en el archivo
+		equipos.write((char*) &equip[3], sizeof(struct Equipo)); // escribiendo la variable en el archivo
+		equipos.write((char*) &equip[4], sizeof(struct Equipo)); // escribiendo la variable en el archivo
+		equipos.close(); //cerrando el archivo equipos
+		string orden;
+		if (opcion == 1){
+			orden = "ASCENDENTE";
+		}
+		if (opcion == 2){
+			orden = "DESCENDENTE";
+				}
+		cout<<"<<<<<PUESTOS DE LOS EQUIPOS EN EL ORDEN QUE SE ALMACENARAN>>>>>"<<endl;
+		cout<<"               (ordenado de forma "<<orden<<".)\n\n"<<endl;
+
+		ifstream input("equipo.txt", ios::binary);//abriendo el archivo que creamos antes.
+		Equipo aux;//
+		for(int i=0; i< 5; i++){
+		input.read((char*) &aux, sizeof(struct Equipo));
+		cout<<"el equipo en la posicion No. "<<i+1<<" es:"<<endl;
+		cout<<"el nombre del equipo es     : "<< aux.nombre<<endl;
+		cout<<"el numero de integrantes es : "<< aux.numerodeintegrantes<<endl;
+		cout<<"el puntaje es               : "<< aux.puntaje<<"\n"<<endl;
+		}
+		input.close();
+
+}
